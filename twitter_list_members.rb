@@ -20,15 +20,15 @@ def all_list_members(list_owner_username, slug)
   users
 end
 
-def all_followers(user)
-  followers = []
+def all_friends(user)
+  users = []
   cursor = -1
   while cursor.nonzero?
-    response = Twitter.followers(user, :cursor => cursor)
-    followers += response.users
+    response = Twitter.friends(user, :cursor => cursor)
+    users += response.users
     cursor = response.next_cursor
   end
-  followers
+  users
 end
 
 CSV.open('list.csv', 'w') do |csv|
