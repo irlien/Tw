@@ -20,6 +20,17 @@ def all_list_members(list_owner_username, slug)
   users
 end
 
+def all_followers(user)
+  followers = []
+  cursor = -1
+  while cursor.nonzero?
+    response = Twitter.followers(user, :cursor => cursor)
+    followers += response.users
+    cursor = response.next_cursor
+  end
+  followers
+end
+
 CSV.open('list.csv', 'w') do |csv|
   csv << %w(ID Name ScreenName Location Description URL)
   all_list_members('verified', 'politics').each do |user|
